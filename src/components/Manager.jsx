@@ -10,7 +10,7 @@ const Manager = () => {
     const [editingItem, setEditingItem] = useState(null);
     const { user } = useContext(AuthContext);
 
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
 
     const getAuthHeaders = () => ({
         'Content-Type': 'application/json',

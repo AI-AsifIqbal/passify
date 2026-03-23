@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173', // Restrict CORS
+    origin: true, // Allow all origins explicitly for Vercel sharing or restrictive env setup
     credentials: true
 }));
 
@@ -39,6 +39,10 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(port, () => {
-    console.log(`🚀 Server running at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`🚀 Server running at http://localhost:${port}`);
+    });
+}
+
+module.exports = app;
