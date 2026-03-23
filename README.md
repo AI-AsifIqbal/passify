@@ -32,7 +32,6 @@ A modern MERN stack application for secure password management. Built with React
 - **Vite** 7.3.1 - Build tool with HMR
 - **Tailwind CSS** 4.2.2 - Utility-first CSS framework
 - **React Toastify** 11.0.5 - Toast notifications
-- **UUID** 13.0.0 - Unique identifier generation
 
 ### Backend
 - **Node.js** - Runtime environment
@@ -40,30 +39,28 @@ A modern MERN stack application for secure password management. Built with React
 - **MongoDB** 7.1.0 - NoSQL database
 - **CORS** 2.8.6 - Cross-origin resource sharing
 - **Dotenv** 17.3.1 - Environment variable management
-- **Body Parser** 2.2.2 - Request parsing middleware
 
 ## 📁 Project Structure
 
-```
+```text
 passify/
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Footer.jsx
-│   │   │   ├── Manager.jsx
-│   │   │   └── Navbar.jsx
-│   │   ├── assets/
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   ├── index.html
-│   ├── vite.config.js
-│   ├── eslint.config.js
-│   └── package.json
+├── src/
+│   ├── components/
+│   │   ├── Footer.jsx
+│   │   ├── Manager.jsx
+│   │   └── Navbar.jsx
+│   ├── assets/
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
 ├── backend/
 │   ├── server.js
 │   ├── .env
 │   └── package.json
+├── index.html
+├── vite.config.js
+├── eslint.config.js
+├── package.json
 └── README.md
 ```
 
@@ -101,9 +98,9 @@ passify/
 **Terminal 1 - Start Backend Server**
 ```bash
 cd backend
-npm start
+node server.js
 ```
-Backend runs on `http://localhost:5000` (or configured PORT)
+Backend runs on `http://localhost:3000`
 
 **Terminal 2 - Start Frontend Development Server**
 ```bash
@@ -134,15 +131,15 @@ npm run lint
 Create a `.env` file in the `backend/` directory:
 
 ```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/passify
+MONGO_URI=mongodb://localhost:27017
+DB_NAME=passify
 NODE_ENV=development
 ```
 
 For MongoDB Atlas:
 ```env
-PORT=5000
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/passify
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net
+DB_NAME=passify
 NODE_ENV=development
 ```
 

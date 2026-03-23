@@ -1,82 +1,44 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const { MongoClient, ObjectId } = require('mongodb');
-const cors = require('cors')
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const mongoose = require('mongoose');
 
-dotenv.config()
+const authRoutes = require('./routes/auth');
+const passwordRoutes = require('./routes/passwords');
 
-const app = express()
-const port = 3000
+dotenv.config();
 
-app.use(express.json())
-app.use(cors())
+const app = express();
+const port = process.env.PORT || 3000;
 
-const url = process.env.MONGO_URI
-const client = new MongoClient(url);
-const dbName = process.env.DB_NAME;
+app.use(express.json());
+app.use(cors({
+    origin: 'http://localhost:5173', // Restrict CORS
+    credentials: true
+}));
 
-let collection;
+const url = process.env.MONGO_URI || 'mongodb://localhost:27017';
+const dbName = process.env.DB_NAME || 'passify';
+const connectUrl = url.endsWith('/') ? `${url}${dbName}` : `${url}/${dbName}`;
 
-async function startServer() {
-    try {
-        await client.connect();
-        console.log('✅ MongoDB Connected');
-
-        const db = client.db(dbName);
-        collection = db.collection('passwords');
-
-        app.listen(port, () => {
-            console.log(`🚀 Server running at http://localhost:${port}`);
-        });
-
-    } catch (err) {
+// Connect to MongoDB
+mongoose.connect(connectUrl)
+    .then(() => console.log('✅ MongoDB Mongoose Connected'))
+    .catch((err) => {
+        console.error('❌ MongoDB Connection Error:');
         console.error(err);
-    }
-}
+    });
 
-startServer();
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/passwords', passwordRoutes);
 
-// Get all passwords
-app.get('/', async (req, res) => {
-    try {
-        const data = await collection.find().toArray();
-        res.json(data);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Save a password
-app.post('/', async (req, res) => {
-    try {
-        const result = await collection.insertOne(req.body);
-        res.json({ success: true, result });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Edit a password
-app.put('/:id', async (req, res) => {
-    try {
-        const id = req.params.id;
-        const updatedData = req.body;
-        await collection.updateOne(
-            { _id: new ObjectId(id) },
-            { $set: updatedData }
-        );
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Delete a password
-app.delete('/:id', async (req, res) => {
-    try {
-        await collection.deleteOne({ _id: new ObjectId(req.params.id) });
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+app.listen(port, () => {
+    console.log(`🚀 Server running at http://localhost:${port}`);
 });
