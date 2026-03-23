@@ -2,6 +2,8 @@
 
 A modern MERN stack application for secure password management. Built with React, Express, MongoDB, and Node.js.
 
+🚀 **Live Demo:** [https://passify-gamma.vercel.app](https://passify-gamma.vercel.app)
+
 ## 📋 Table of Contents
 
 - [Features](#features)
