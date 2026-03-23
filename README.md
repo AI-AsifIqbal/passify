@@ -18,10 +18,12 @@ A modern MERN stack application for secure password management. Built with React
 ## ✨ Features
 
 - Secure password storage and management
+- User authentication (Registration & Login) using JWT
+- AES-256-GCM encryption for stored passwords
 - User-friendly interface with Tailwind CSS
 - Real-time notifications with React Toastify
 - RESTful API backend with Express.js
-- MongoDB database integration
+- MongoDB database integration via Mongoose
 - CORS-enabled for cross-origin requests
 - ESLint code quality standards
 
@@ -30,13 +32,17 @@ A modern MERN stack application for secure password management. Built with React
 ### Frontend
 - **React** 19.2.0 - UI library
 - **Vite** 7.3.1 - Build tool with HMR
+- **React Router DOM** - Client-side routing
 - **Tailwind CSS** 4.2.2 - Utility-first CSS framework
 - **React Toastify** 11.0.5 - Toast notifications
 
 ### Backend
 - **Node.js** - Runtime environment
 - **Express.js** 5.2.1 - Web framework
-- **MongoDB** 7.1.0 - NoSQL database
+- **MongoDB & Mongoose** - NoSQL database and Object Data Modeling
+- **bcryptjs** - Password hashing
+- **jsonwebtoken** - Authentication tokens
+- **zod** - Input validation
 - **CORS** 2.8.6 - Cross-origin resource sharing
 - **Dotenv** 17.3.1 - Environment variable management
 
@@ -48,13 +54,31 @@ passify/
 │   ├── components/
 │   │   ├── Footer.jsx
 │   │   ├── Manager.jsx
-│   │   └── Navbar.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── PasswordForm.jsx
+│   │   └── PasswordTable.jsx
+│   ├── context/
+│   │   └── AuthContext.jsx
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   └── Register.jsx
 │   ├── assets/
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css
 ├── backend/
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── models/
+│   │   ├── Password.js
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   └── passwords.js
+│   ├── utils/
+│   │   └── encryption.js
 │   ├── server.js
+│   ├── debug.js
 │   ├── .env
 │   └── package.json
 ├── index.html
@@ -75,7 +99,7 @@ passify/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/AI-AsifIqbal/passify.git
    cd passify
    ```
 
@@ -133,24 +157,28 @@ Create a `.env` file in the `backend/` directory:
 ```env
 MONGO_URI=mongodb://localhost:27017
 DB_NAME=passify
-NODE_ENV=development
-```
-
-For MongoDB Atlas:
-```env
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net
-DB_NAME=passify
+PORT=3000
+JWT_SECRET=your_super_secret_jwt_key
+ENCRYPTION_KEY=64_character_hex_string_for_aes_256_gcm
 NODE_ENV=development
 ```
 
 ## 📡 API Endpoints
 
+### Authentication
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/` | Get all passwords |
-| POST | `/` | Create new password entry |
-| PUT | `/:id` | Update password entry |
-| DELETE | `/:id` | Delete password entry |
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Authenticate user & get token |
+| GET | `/api/auth/profile` | Get current user profile (Protected) |
+
+### Passwords (Protected)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/passwords` | Get all passwords for logged in user |
+| POST | `/api/passwords` | Create new password entry |
+| PUT | `/api/passwords/:id` | Update password entry |
+| DELETE | `/api/passwords/:id` | Delete password entry |
 
 ## 🤝 Contributing
 
