@@ -15,7 +15,7 @@ const Register = () => {
         try {
             const apiUrl = import.meta.env.VITE_API_URL;
             console.log(apiUrl);
-            const res = await fetch(`${apiUrl}/register`, {
+            const res = await fetch(`${apiUrl}/api/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
