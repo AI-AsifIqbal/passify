@@ -76,12 +76,15 @@ const PasswordForm = ({ savePassword, editingItem, setEditingItem }) => {
 
             <div className="flex gap-4 w-full sm:w-auto">
                 <button type="submit" className='flex justify-center items-center gap-2 bg-green-400 hover:bg-green-300 rounded-full px-6 sm:px-10 py-2 w-full sm:w-fit font-bold border border-green-900'>
-                    {editingItem ? 'Update' : <div className='flex justify-center items-center gap-2 text-xl'><lord-icon
+                    {editingItem ? 'Update' : <div className='flex justify-center items-center gap-2 text-xl'>
+                        <lord-icon
                             style={{ width: "25px", height: "25px" }}
                             src="https://cdn.lordicon.com/jgnvfzqg.json"
                             trigger="hover"
                         >
-                        </lord-icon>Save</div>}
+                        </lord-icon>
+                        Save
+                    </div>}
                 </button>
                 {editingItem && (
                     <button type="button" onClick={handleCancel} className='flex justify-center items-center gap-2 bg-red-400 hover:bg-red-300 rounded-full px-6 sm:px-10 py-2 w-full sm:w-fit font-bold border border-red-900'>

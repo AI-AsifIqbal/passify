@@ -19,7 +19,12 @@ app.use(cors({
 
 const url = process.env.MONGO_URI || 'mongodb://localhost:27017';
 const dbName = process.env.DB_NAME || 'passify';
-const connectUrl = url.endsWith('/') ? `${url}${dbName}` : `${url}/${dbName}`;
+
+// Only append dbName if the URI doesn't already contain it and doesn't have query parameters
+let connectUrl = url;
+if (!url.includes(dbName) && !url.includes('?')) {
+    connectUrl = url.endsWith('/') ? `${url}${dbName}` : `${url}/${dbName}`;
+}
 
 // Connect to MongoDB
 mongoose.connect(connectUrl)

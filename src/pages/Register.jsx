@@ -13,8 +13,9 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
-            const res = await fetch(`${apiUrl}/api/auth/register`, {
+            const apiUrl = import.meta.env.VITE_API_URL;
+            console.log(apiUrl);
+            const res = await fetch(`${apiUrl}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
